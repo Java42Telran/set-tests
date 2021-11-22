@@ -15,7 +15,8 @@ Integer[] initialNumbers = {
 Set<Integer> set;
 	@BeforeEach
 	void setUp() throws Exception {
-		set = new TreeSet<>();
+		//set = new TreeSet<>();
+		set = new HashSet<>(3);
 		fillSet();
 	}
 
@@ -68,7 +69,8 @@ Set<Integer> set;
 	@Test
 	void removeIfTest() {
 		Integer randomNumbers[] = getRandomNumbers();
-		Set<Integer> setNumbers = new TreeSet<>();
+		//Set<Integer> setNumbers = new TreeSet<>();
+		Set<Integer> setNumbers = new HashSet<>();
 		fillSetFromArray(setNumbers, randomNumbers);
 		setNumbers.removeIf(n -> n % 2 == 0);
 		for(Integer num: setNumbers) {
@@ -111,7 +113,8 @@ Set<Integer> set;
 	@Test
 	void iteratorNoRemoveTest() {
 		Integer[] randomNumbers = getRandomNumbers();
-		Set<Integer> numbersSet = new TreeSet<>();
+		//Set<Integer> numbersSet = new TreeSet<>();
+		Set<Integer> numbersSet = new HashSet<>();
 		fillSetFromArray(numbersSet, randomNumbers);
 		Arrays.sort(randomNumbers);
 		assertArrayEquals(randomNumbers, getArrayFromSet(numbersSet));
@@ -131,8 +134,23 @@ Set<Integer> set;
 		for(T obj: set) {
 			res[ind++] = obj;
 		}
+		if (!(set instanceof TreeSet)) {
+			Arrays.sort(res);
+		}
 		return res;
 	}
+	@Test
+	void removeContainsBased() {
+		Integer expected[] = {
+				1, 2, 3, 4,  10, 20, 25, 40, 60
+		};
+		set.remove(5);
+		assertFalse(set.contains(5));
+		for (Integer num: expected) {
+			assertTrue(set.contains(num));
+		}
+	}
+	
 	
 
 }
